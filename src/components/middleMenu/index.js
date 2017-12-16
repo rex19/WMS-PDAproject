@@ -41,8 +41,9 @@ const Circle = (props) => {
     height: size * 0.8,
     margin: 5,
   };
+
   return (
-    <View style={style} onPress={props.onPressFunction}>
+    <View style={style} onPress={handleClickStation}>
       <Text style={styles.textClass}>{props.title}</Text>
     </View>
   );
@@ -74,19 +75,16 @@ export default class MiddleMenu extends Component {
   }
 
 
-  handleClickStation = (index) => {
-    console.log('handleClickStation', index)
+  handleClickStation = (index, e) => {
+    console.log('handleClickStation', index, e)
     if (index === 0) {
-      console.log('index==111')
       this.props.navigation.navigate('MoveStorehouse', { name: '区域内移库', userName: this.props.navigation.state.params.userName })
     } else if (index === 1) {
-      console.log('111')
+      this.props.navigation.navigate('Inventory', { name: '盘点', userName: this.props.navigation.state.params.userName })
+    } else if (index === 2) {
+      this.props.navigation.navigate('PrepareMaterials', { name: '按工单备料', userName: this.props.navigation.state.params.userName })
     }
-
-    // index === 0 ? this.props.navigation.navigate('WorkOrder', { name: '工单激活', userName: this.props.navigation.state.params.userName, lineName: this.state.lineName })
-    //   : this.props.navigation.navigate('Traceability', { name: '追溯记录', userName: this.props.navigation.state.params.userName, lineName: this.state.lineName })
   }
-  // this.props.navigation.navigate('Traceability', { name: '交运追溯系统', userName: username })
   render() {
     return (
       <View >
@@ -98,14 +96,30 @@ export default class MiddleMenu extends Component {
           </WingBlank>
           <WingBlank style={{ marginBottom: 5 }}>
             <Flex justify="between">
-              <Circle size={160} onPressFunction={this.handleClickStation(0)} title='区域内移库' />
-              <Circle size={160} onPressFunction={this.handleClickStation(1)} title='盘点' />
+              <TouchableHighlight underlayColor='rgba(214,215,218,1)' onPress={this.handleClickStation.bind(this, 0)}>
+                <View style={styles.menuView} onPress={this.handleClickStation}>
+                  <Text style={styles.textClass}>区域内移库</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight underlayColor='rgba(214,215,218,1)' onPress={this.handleClickStation.bind(this, 1)}>
+                <View style={styles.menuView} >
+                  <Text style={styles.textClass}>盘点</Text>
+                </View>
+              </TouchableHighlight>
             </Flex>
           </WingBlank>
           <WingBlank style={{ marginBottom: 5 }}>
             <Flex justify="between">
-              <Circle size={160} onPressFunction={this.handleClickStation(2)} title='按工单备料' />
-              <Circle size={160} onPressFunction={this.handleClickStation(3)} title='测试' />
+              <TouchableHighlight underlayColor='rgba(214,215,218,1)' onPress={this.handleClickStation.bind(this, 2)}>
+                <View style={styles.menuView}>
+                  <Text style={styles.textClass}>按工单备料</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight underlayColor='rgba(214,215,218,1)' onPress={this.handleClickStation.bind(this, 3)}>
+                <View style={styles.menuView} >
+                  <Text style={styles.textClass}>测试</Text>
+                </View>
+              </TouchableHighlight>
             </Flex>
           </WingBlank>
           <WingBlank >
@@ -119,7 +133,8 @@ export default class MiddleMenu extends Component {
     )
   }
 }
-
+// <Circle size={160} onPressFunction={this.handleClickStation(2)} title='按工单备料' />
+// <Circle size={160} onPressFunction={this.handleClickStation(3)} title='测试' />
 const styles = StyleSheet.create({
   subTitle: {
     marginBottom: 10,
@@ -146,8 +161,14 @@ const styles = StyleSheet.create({
   },
   quitButton: {
     marginTop: 20
+  },
+  menuView: {
+    borderRadius: 160 / 0.03,
+    backgroundColor: '#1B87ED',
+    width: 160,
+    height: 160 * 0.8,
+    margin: 5,
   }
-
 });
 
 

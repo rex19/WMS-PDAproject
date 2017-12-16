@@ -43,12 +43,12 @@ export default class MoveStorehouse extends Component {
           <InputItem
             // focused={this.state.workOrderNoFocused}
             value={this.state.uidValue}
-            editable={false}
+            editable={true}
           ><Text style={styles.span}>UID:</Text></InputItem>
           <InputItem
             value={this.state.targetValue}
             // focused={this.state.PlanStartDateTimeFocused}
-            editable={false}
+            editable={true}
           ><Text style={styles.span}>目标库位:</Text></InputItem>
         </List>
 
@@ -58,10 +58,10 @@ export default class MoveStorehouse extends Component {
             { text: '确定', onPress: () => this.handleActivation() },
           ])}
         >提交</Button>
-
+        <WhiteSpace size="sm" />
         <List renderHeader={() => '消息'}>
           <TextareaItem
-            rows={5}
+            rows={10}
             count={100}
           />
         </List>
