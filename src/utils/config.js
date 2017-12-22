@@ -15,6 +15,9 @@ const post = '80'
 // const ip = '192.168.0.99'
 // const post = '80'
 
+const localIp = '192.168.1.136'
+const localPost = '3009'
+
 export const PublicParam = {
   name: 'JyPDA',
   mock: true,
@@ -22,5 +25,11 @@ export const PublicParam = {
   GetWorkOrderUrl: `http://${ip}:${post}/JYTrace/API/APIGetWorkOrder/?LineCode=`,
   PostWorkOrderUrl: `http://${ip}:${post}/JYTrace/API/ApiActivateWorkOrder/`,
   PostTracebilityUrl: `http://${ip}:${post}/JYTrace/API/ApiSetupMaterial/`,
+
+  //wms-pda
+  GetALlFormTypeUrl: `http://${localIp}:${localPost}/sfwms/api/MovementRecord/GetALlFormType`,
+  GetWMSFormByFormTypeIdUrl: `http://${localIp}:${localPost}/sfwms/api/MovementRecord/GetWMSFormByFormTypeId/`,
+  MovementRecordPostUrl: `http://${localIp}:${localPost}/sfwms/Api/MovementRecord/Post`,
+
 }
 

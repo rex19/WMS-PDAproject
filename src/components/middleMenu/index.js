@@ -11,6 +11,8 @@ import { Card, WingBlank, WhiteSpace, Button, Picker, List, Grid, Toast, Flex } 
 // import test2 from '../../img/test2.jpg';
 // let test1 = '../../img/test1.jpg'
 // let test2 = '../../img/test2.jpg'
+const Item = List.Item;
+const Brief = Item.Brief;
 
 const lineObj = [
   {
@@ -94,6 +96,37 @@ export default class MiddleMenu extends Component {
           <WingBlank style={{ marginTop: 5, marginBottom: 5 }}>
             <Text style={styles.subTitle}>菜单</Text>
           </WingBlank>
+          <List renderHeader={() => '菜单'} className="my-list">
+            <WhiteSpace size="sm" />
+            <Item
+              arrow="horizontal"
+              thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+              multipleLine
+              onClick={() => { this.props.navigation.navigate('MoveStorehouse', { name: '区域内移库', userName: this.props.navigation.state.params.userName }) }}
+            >
+              区域内移库 <Brief>点我点我</Brief>
+            </Item>
+            <WhiteSpace size="lg" />
+            <Item
+              arrow="horizontal"
+              thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+              multipleLine
+              onClick={() => { this.props.navigation.navigate('Inventory', { name: '盘点', userName: this.props.navigation.state.params.userName }) }}
+            >
+              盘点 <Brief>点我点我</Brief>
+            </Item>
+            <WhiteSpace size="lg" />
+            <Item
+              arrow="horizontal"
+              thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+              multipleLine
+              onClick={() => { this.props.navigation.navigate('PrepareMaterials', { name: '按工单备料', userName: this.props.navigation.state.params.userName }) }}
+            >
+              按工单备料 <Brief>点我点我</Brief>
+            </Item>
+            <WhiteSpace size="lg" />
+          </List>
+
           <WingBlank style={{ marginBottom: 5 }}>
             <Flex justify="between">
               <TouchableHighlight underlayColor='rgba(214,215,218,1)' onPress={this.handleClickStation.bind(this, 0)}>
