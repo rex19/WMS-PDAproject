@@ -46,10 +46,11 @@ export default class MoveStorehouse extends Component {
   }
 
   fetchRequestInitFunc = () => {
-    fetch(GetALlFormTypeUrl, { methon: "GET" })
+    fetch(GetALlFormTypeUrl, { method: "GET" })
       .then((response) => {
         return response.json();
       }).then((responseJson) => {
+        console.log('fetchRequestInitFunc', responseJson)
         //GetALlFormTypeUrl拉过来的操作类型Array
         this.setState({ OperationTypeArray: responseJson.Data }, this.fetchRequestFunc(1))
       }).catch((error) => {
@@ -57,25 +58,31 @@ export default class MoveStorehouse extends Component {
       }).done();
   }
   fetchRequestFunc = (param = 1) => {
+    console.log('fetchRequestFunc', param)
     //第二个fetch，初始化一个DocsNumberArray下拉菜单的值
-    fetch(GetWMSFormByFormTypeIdUrl + param,
-      { methon: "GET" }
+    fetch(`${GetWMSFormByFormTypeIdUrl}/?formTypeId=${param}`,
+      { method: "GET" }
     ).then((response) => {
+      console.log('fetchRequestFunc.then', `${GetWMSFormByFormTypeIdUrl}/${param}`, response)
       return response.json();
     }).then((responseJson) => {
+      console.log('fetchRequestFunc', responseJson)
       this.setState({ DocsNumberArray: responseJson.Data })
-    })
+    }).catch((error) => {
+      console.log('GetALlFormTypeUrlError::', error)
+    }).done();
   }
 
   onClick = (key) => () => {
     this.setState({ [key]: lineObj })
   }
   onChange = (key) => (value) => {
+    console.log('onChange', key, value)
     this.setState({ [key]: value });
     if (key === 'DocsNumberValue') {
       this.setState({ UIDFocused: true });
     } else if (key === 'OperationTypeValue') {
-      this.fetchRequestFunc()
+      this.fetchRequestFunc(value[0])
     }
   }
   uidOnBlur = () => {
@@ -101,7 +108,7 @@ export default class MoveStorehouse extends Component {
       console.log('fetch3', responseJson)
       if (responseJson.Status === 200) {
         //GetALlFormTypeUrl拉过来的操作类型Array
-        this.setState({ MessageValue: responseJson.Data.toString() })
+        this.setState({ MessageValue: responseJson.Data.Message.toString() })
       }
     }).catch((error) => {
       console.log('MovementRecordPostUrlError::', error)
@@ -117,7 +124,7 @@ export default class MoveStorehouse extends Component {
           <Picker
             data={this.state.OperationTypeArray}
             cols={1}
-            value={this.state.OperationTypeValue}
+            value={this.state.OperationTypeValue[0]}
             onChange={this.onChange('OperationTypeValue')}
           >
             <List.Item arrow="horizontal" last ><Text style={styles.span}>操作类型:</Text></List.Item>
@@ -125,7 +132,7 @@ export default class MoveStorehouse extends Component {
           <Picker
             data={this.state.DocsNumberArray}
             cols={1}
-            value={this.state.DocsNumberValue}
+            value={this.state.DocsNumberValue[0]}
             onChange={this.onChange('DocsNumberValue')}
           >
             <List.Item arrow="horizontal" last ><Text style={styles.span}>单据号:</Text></List.Item>

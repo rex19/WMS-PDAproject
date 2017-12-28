@@ -46,7 +46,7 @@ export default class MoveStorehouse extends Component {
   }
 
   fetchRequestInitFunc = () => {
-    fetch(GetALlFormTypeUrl, { methon: "GET" })
+    fetch(GetALlFormTypeUrl, { method: "GET" })
       .then((response) => {
         return response.json();
       }).then((responseJson) => {
@@ -59,7 +59,7 @@ export default class MoveStorehouse extends Component {
   fetchRequestFunc = (param = 1) => {
     //第二个fetch，初始化一个DocsNumberArray下拉菜单的值
     fetch(GetWMSFormByFormTypeIdUrl + param,
-      { methon: "GET" }
+      { method: "GET" }
     ).then((response) => {
       return response.json();
     }).then((responseJson) => {

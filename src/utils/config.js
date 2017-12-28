@@ -8,6 +8,16 @@
  */
 const ip = '192.168.1.252'
 const post = '80'
+const api = 'sfmeswms'
+
+// const ip = '192.168.1.136'
+// const post = '3009'
+// const api = 'sfwms'
+
+// const localIp = '192.168.1.136'
+// const localPost = '3009'
+// const localApi  = 'sfwms'
+
 
 // const ip = '192.168.1.113'
 // const post = '80'
@@ -15,8 +25,6 @@ const post = '80'
 // const ip = '192.168.0.99'
 // const post = '80'
 
-const localIp = '192.168.1.136'
-const localPost = '3009'
 
 export const PublicParam = {
   name: 'JyPDA',
@@ -26,10 +34,20 @@ export const PublicParam = {
   PostWorkOrderUrl: `http://${ip}:${post}/JYTrace/API/ApiActivateWorkOrder/`,
   PostTracebilityUrl: `http://${ip}:${post}/JYTrace/API/ApiSetupMaterial/`,
 
-  //wms-pda
-  GetALlFormTypeUrl: `http://${localIp}:${localPost}/sfwms/api/MovementRecord/GetALlFormType`,
-  GetWMSFormByFormTypeIdUrl: `http://${localIp}:${localPost}/sfwms/api/MovementRecord/GetWMSFormByFormTypeId/`,
-  MovementRecordPostUrl: `http://${localIp}:${localPost}/sfwms/Api/MovementRecord/Post`,
-
+  /**
+   * wms-pda
+   */
+  //移库
+  GetALlFormTypeUrl: `http://${ip}:${post}/${api}/api/MovementRecord/GetALlFormType`,
+  GetWMSFormByFormTypeIdUrl: `http://${ip}:${post}/${api}/api/MovementRecord/GetWMSFormByFormTypeId`,
+  MovementRecordPostUrl: `http://${ip}:${post}/${api}/Api/MovementRecord/Post`,
+  //安工单备料
+  // GetAllMaterialPickingFormUrl: `http://${localIp}:${localPost}/sfwms/api/prepareMaterials/GetAllMaterialPickingForm`,
+  // GetMaterialPickingFormItemOnedUrl: `http://${localIp}:${localPost}/sfwms/api/prepareMaterials/GetMaterialPickingFormItemOne/`,
+  GetAllMaterialPickingFormUrl: `http://${ip}:${post}/${api}/api/MaterialPicking/GetAllMaterialPickingForm`,
+  GetMaterialPickingFormItemOnedUrl: `http://${ip}:${post}/${api}/api/MaterialPicking/GetAllMaterialPickingForm`,
+  PostSubmitUrl: `http://${ip}:${post}/${api}/Api/MaterialPicking/Post`,
 }
 
+
+// http://192.168.1.252/sfmeswms/api/MaterialPicking/GetMaterialPickingFormItemOne?materialPickingFormId=1&ItemNumber=0&getMode=0
