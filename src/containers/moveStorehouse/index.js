@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -18,12 +18,8 @@ const Item = List.Item;
 const Brief = Item.Brief;
 const RadioItem = Radio.RadioItem;
 
-let num = 0;
-let ListSweepRecordArray = [];
-let dataArray = [];
 
-
-export default class MoveStorehouse extends Component {
+export default class MoveStorehouse extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -91,16 +87,17 @@ export default class MoveStorehouse extends Component {
   handleActivation() {
     this.setState({ UIDFocused: false, targetFocused: false });
     fetch(MovementRecordPostUrl, {
+      // fetch('http://192.168.1.107:3009/sfwms/Api/MovementRecord/Post', {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        FormTypeId: this.state.OperationTypeValue,
-        WMSFormId: this.state.DocsNumberValue,
+        FormTypeId: parseInt(this.state.OperationTypeValue[0]),
+        WMSFormId: parseInt(this.state.DocsNumberValue[0]),
         ContainerNumber: this.state.uidValue,
         LocationNumber: this.state.targetValue,
-        UserId: 1
+        UserId: 10
       })
     }).then((response) => {
       return response.json();
@@ -108,7 +105,11 @@ export default class MoveStorehouse extends Component {
       console.log('fetch3', responseJson)
       if (responseJson.Status === 200) {
         //GetALlFormTypeUrl拉过来的操作类型Array
-        this.setState({ MessageValue: responseJson.Data.Message.toString() })
+        this.setState({
+          MessageValue: responseJson.Data.Message.toString(),
+          uidValue: '',
+          targetValue: ''
+        })
       }
     }).catch((error) => {
       console.log('MovementRecordPostUrlError::', error)
@@ -158,10 +159,9 @@ export default class MoveStorehouse extends Component {
             { text: '确定', onPress: () => this.handleActivation() },
           ])}
         >提交</Button>
-        <WhiteSpace size="sm" />
         <List renderHeader={() => '消息'}>
           <TextareaItem
-            rows={10}
+            rows={4}
             count={100}
             editable={false}
             value={this.state.MessageValue}

@@ -12,7 +12,7 @@ import { Card, WingBlank, WhiteSpace, Button, Picker, List, Grid, Toast, Flex } 
 // import test1 from '../../img/test1.jpg';
 // import test2 from '../../img/test2.jpg';
 // let test1 = '../../img/test1.jpg'
-// let test2 = '../../img/test2.jpg'
+// let test2 = '../../img/test2.jpg' 
 const Item = List.Item;
 const Brief = Item.Brief;
 
@@ -49,88 +49,75 @@ const resetAction = NavigationActions.reset({
     NavigationActions.navigate({ routeName: 'Main' }),
   ]
 })
-class MiddleMenu extends Component {
-  constructor(props) {
-    super(props);
-  }
+const MiddleMenu = (props) => {
 
 
-  quit = () => {
-    console.log('quit', this.props.navigation.state.params.key)
+
+  const quit = () => {
+    console.log('quit', props.navigation.state.params.key)
     // this.props.navigation.goBack();
-    this.props.navigation.dispatch(resetAction)
+    props.navigation.dispatch(resetAction)
     // this.props.navigation.dispatch(NavigationActions.back({
     //   key: this.props.navigation.state.params.key
     // }))
   }
 
-  handleClick = (params) => () => {
+  const handleClick = (params) => () => {
 
     console.log('handleClick', params)
     switch (params) {
       case 'MoveStorehouse':
-        this.props.navigation.dispatch(navigateActionToMoveStorehouse)
+        props.navigation.dispatch(navigateActionToMoveStorehouse)
         break;
       case 'Inventory':
-        this.props.navigation.dispatch(navigateActionToInventory)
+        props.navigation.dispatch(navigateActionToInventory)
         break;
       case 'PrepareMaterials':
-        this.props.navigation.dispatch(navigateActionToPrepareMaterials)
+        props.navigation.dispatch(navigateActionToPrepareMaterials)
         break;
     }
   }
 
-  render() {
-    return (
-      <View >
-        <WingBlank size="lg">
-          <WhiteSpace size="lg" />
 
-          <WingBlank style={{ marginTop: 5, marginBottom: 5 }}>
-            <Text style={styles.subTitle}>菜单</Text>
-          </WingBlank>
-          <List renderHeader={() => '菜单'} className="my-list">
-            <WhiteSpace size="sm" />
-            <Item
-              arrow="horizontal"
-              thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-              multipleLine
-              onClick={this.handleClick('MoveStorehouse')}
-            >
-              区域内移库 <Brief>点我点我</Brief>
-            </Item>
-            <WhiteSpace size="lg" />
-            <Item
-              arrow="horizontal"
-              thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-              multipleLine
-              onClick={this.handleClick('Inventory')}
-            >
-              盘点 <Brief>点我点我</Brief>
-            </Item>
-            <WhiteSpace size="lg" />
-            <Item
-              arrow="horizontal"
-              thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-              multipleLine
-              onClick={this.handleClick('PrepareMaterials')}
-            >
-              按工单备料 <Brief>点我点我</Brief>
-            </Item>
-            <WhiteSpace size="lg" />
-          </List>
+  return (
+    <View >
+      <WingBlank size="lg">
+        <WhiteSpace size="lg" />
 
-
-          <WingBlank >
-            <Button type='ghost' style={styles.quitButton}
-              onClick={() => this.quit()}
-            >退出登陆</Button>
-          </WingBlank>
+        <WingBlank style={{ marginTop: 5, marginBottom: 5 }}>
+          <Text style={styles.subTitle}>菜单</Text>
         </WingBlank>
-      </View>
-    )
-  }
+        <List renderHeader={() => '菜单'} className="my-list">
+          <WhiteSpace size="sm" />
+          <Item
+            arrow="horizontal"
+            // thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+            multipleLine
+            onClick={handleClick('MoveStorehouse')}
+          >
+            区域内移库 <Brief>点我点我</Brief>
+          </Item>
+          <WhiteSpace size="lg" />
+          <Item
+            arrow="horizontal"
+            // thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+            multipleLine
+            onClick={handleClick('PrepareMaterials')}
+          >
+            按工单备料 <Brief>点我点我</Brief>
+          </Item>
+          <WhiteSpace size="lg" />
+        </List>
+        <WingBlank >
+          <Button type='ghost' style={styles.quitButton}
+            onClick={() => quit()}
+          >退出登陆</Button>
+        </WingBlank>
+      </WingBlank>
+    </View>
+  )
 }
+
 export default MiddleMenu
 
 const styles = StyleSheet.create({
@@ -170,3 +157,14 @@ const styles = StyleSheet.create({
 });
 
 
+
+
+// <Item
+// arrow="horizontal"
+// // thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+// multipleLine
+// onClick={this.handleClick('Inventory')}
+// >
+// 盘点 <Brief>点我点我</Brief>
+// </Item>
+// <WhiteSpace size="lg" />

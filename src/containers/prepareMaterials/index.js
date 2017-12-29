@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -10,32 +10,14 @@ import { connect } from 'react-redux'; // 引入connect函数
 import { Pagination, Button, Picker, List, InputItem, WhiteSpace, Modal, WingBlank, NoticeBar, Toast, Radio, Icon, ActivityIndicator, TextareaItem } from 'antd-mobile';
 import { PublicParam } from '../../utils/config.js'
 import mockJson from '../../mock/mock.json';
-// const GetAllMaterialPickingFormUrl = PublicParam.GetAllMaterialPickingFormUrl
-// const GetMaterialPickingFormItemOnedUrl = PublicParam.GetMaterialPickingFormItemOnedUrl
 const { GetAllMaterialPickingFormUrl, GetMaterialPickingFormItemOnedUrl, PostSubmitUrl } = PublicParam
 
 const alert = Modal.alert;
 const Item = List.Item;
 const Brief = Item.Brief;
 const RadioItem = Radio.RadioItem;
-const TaskOrderDataArray = [
-  {
-    label: '1线',
-    value: 'line1',
-  }, {
-    label: '2线',
-    value: 'line2',
-  }
-];
-const locale = {
-  prevText: '上一种',
-  nextText: '下一种',
-};
 
-let num = 0;
-let ListSweepRecordArray = [];
-let dataArray = [];
-class PrepareMaterials extends Component {
+class PrepareMaterials extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,10 +29,9 @@ class PrepareMaterials extends Component {
       PackQuantityDisplayValue: '',//包装数
       RecommendLocationNumberValue: '',//库位
       MessageTitle: '',
-      EnableScanContainer: false,  //扫描
-      EnableNext: true, //下一种
-      EnablePrev: true, //上一种
-
+      EnableScanContainer: true,  //扫描
+      EnablePrev: false, //上一种
+      EnableNext: false, //下一种
       total: 2,
       current: 0,
 
@@ -68,7 +49,6 @@ class PrepareMaterials extends Component {
       }).then((responseJson) => {
         console.log('GetAllMaterialPickingFormUrl', responseJson)
         this.setState({ PrepareMaterialsOrderArray: responseJson.Data })
-
       }).catch((error) => {
         console.log('GetAllMaterialPickingFormUrlError::', error)
       }).done();
@@ -80,7 +60,7 @@ class PrepareMaterials extends Component {
       .then((response) => {
         return response.json();
       }).then((responseJson) => {
-
+        console.log('fetchRequestFunc', responseJson)
         this.setState({
           MaterialNumberValue: responseJson.Data.MaterialNumber, //料号
           RecommendContainerValue: responseJson.Data.RecommendContainer,//推荐盘
@@ -94,7 +74,7 @@ class PrepareMaterials extends Component {
           total: responseJson.Data.TotleItem,
           current: responseJson.Data.ItemNumber,
 
-          ScanValue: '',
+          ScanValue: responseJson.Data.MessageScanContainer,
         })
       }).catch((error) => {
         console.log('GetMaterialPickingFormItemOnedUrlError::', error)
@@ -116,6 +96,7 @@ class PrepareMaterials extends Component {
         switch (responseJson.Data.ReturnCode) {
           case 0 && responseJson.Data.Message.length === 0:
             console.log('responseJson.Data.ReturnCode===0&&responseJson.Data.Message.length===0')
+            this.fetchRequestFunc(`?materialPickingFormId=${this.state.PrepareMaterialsOrderValue}&ItemNumber=${this.state.current}&areaId=1`)
             break;
           case 0 && responseJson.Data.Message.length > 0:
             Toast.success(responseJson.Data.Message, 1);
@@ -156,6 +137,7 @@ class PrepareMaterials extends Component {
       }
       console.log('提交', param)
       this.fetchPostFunc(param)
+
     } else {
       Toast.success('提交不合法,谢谢', 1);
     }
@@ -163,12 +145,18 @@ class PrepareMaterials extends Component {
   ScanValueChange = (ScanValue) => {
     this.setState({ ScanValue })
   }
-  PaginationChange = (current) => {
-    console.log('PaginationChange', current)
-    // this.setState({ current })
-    // this.fetchRequestFunc(`?materialPickingFormId=${this.state.PrepareMaterialsOrderValue}&ItemNumber=${current }&areaId=1`);
+  // PaginationChange = (current) => {
+  //   console.log('PaginationChange', current)
+  //   // this.setState({ current })
+  //   // this.fetchRequestFunc(`?materialPickingFormId=${this.state.PrepareMaterialsOrderValue}&ItemNumber=${current }&areaId=1`);
+  // }
+  ChangeItemNumber = (type) => {
+    if (type === 'Prev') {
+      this.fetchRequestFunc(`?materialPickingFormId=${this.state.PrepareMaterialsOrderValue}&ItemNumber=${this.state.current - 1}&areaId=1`);
+    } else if (type === 'Next') {
+      this.fetchRequestFunc(`?materialPickingFormId=${this.state.PrepareMaterialsOrderValue}&ItemNumber=${this.state.current + 1}&areaId=1`);
+    }
   }
-
   render() {
     console.log('PrepareMaterialsrender', this.state)
     return (
@@ -186,7 +174,6 @@ class PrepareMaterials extends Component {
             {this.state.MessageTitle || ''}
           </NoticeBar>
         </List>
-
         <List >
           <InputItem
             value={this.state.MaterialNumberValue}
@@ -208,36 +195,25 @@ class PrepareMaterials extends Component {
             value={this.state.RecommendLocationNumberValue}
             editable={false}
           ><Text style={styles.span}>库位:</Text></InputItem>
-
-
+          <View style={styles.flexStyle}>
+            <Button style={styles.flexSubLeft} type="primary" onClick={this.ChangeItemNumber.bind(this, 'Prev')} disabled={!this.state.EnablePrev} size='large' >上一种</Button>
+            <Button style={styles.flexSubRight} type="primary" onClick={this.ChangeItemNumber.bind(this, 'Next')} disabled={!this.state.EnableNext} size='large' >下一种</Button>
+          </View>
         </List>
-        <WhiteSpace size="sm" />
-        <Pagination
-          simple={false}
-          total={5}
-          current={0}
-          onChange={this.PaginationChange.bind(this)}
-          locale={locale = {
-            prevText: '上一种',
-            nextText: '下一种',
-          }} />
-        <WhiteSpace size="sm" />
         <List>
           <InputItem
             value={this.state.ScanValue}
-            editable={true}
+            // editable={true}
             onChange={this.ScanValueChange.bind(this)}
-            disabled={this.state.EnableScanContainer}
+            editable={!this.state.EnableScanContainer}
           ><Text>扫描:</Text></InputItem>
         </List>
-        <WhiteSpace size="sm" />
         <Button type='primary' style={styles.quitButton}
           onClick={() => alert('提交', '确定提交么?😄', [
             { text: '取消', onPress: () => console.log('不提交') },
             { text: '确定', onPress: () => this.handleActivation() },
           ])}
         >提交</Button>
-        <Pagination onChange={this.PaginationChange.bind(this)} simple={false} total={5} current={0} locale={locale} />
       </View>
     );
   }
@@ -276,7 +252,28 @@ const styles = StyleSheet.create({
   },
   quitButton: {
     marginTop: 0
-  }
+  },
+  flexStyle: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flexWrap: 'nowrap'
+  },
+  flexSubLeft: {
+    flex: 1,
+    width: '30%',
+    height: '100%',
+    // backgroundColor: '#333333',
+    marginLeft: 1,
+  },
+  flexSubRight: {
+    flex: 1,
+    width: '30%',
+    height: '100%',
+    // backgroundColor: '#333333',
+    marginRight: 1,
+  },
+
 });
 export default connect(
   (state) => ({
@@ -285,3 +282,13 @@ export default connect(
 
 
   //     <Pagination simple total={5} current={1} locale={locale} />
+
+  // <Pagination
+  // simple={false}
+  // total={5}
+  // current={0}
+  // onChange={this.PaginationChange.bind(this)}
+  // locale={locale = {
+  //   prevText: '上一种',
+  //   nextText: '下一种',
+  // }} />

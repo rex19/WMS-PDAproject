@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -25,7 +25,7 @@ let num = 1;
 //   ]
 // })
 
-class Login extends Component {
+class Login extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,15 +88,7 @@ class Login extends Component {
     this.setState({ passWord: passWord })
   }
 
-  // jumpPage = (username, password) => {
-  //   console.log('jump')
-  //   this.setState({ userName: '', passWord: '' })
-  //   this.props.navigation.navigate('MiddleMenu', { name: '主菜单', userName: username })
-  // }
-
-
   render() {
-    console.log('login--', this.props.navigation, this.state)
     const { login } = this.props;
     const { userName, passWord } = this.state;
     return (
