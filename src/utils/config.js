@@ -27,7 +27,7 @@ const api = 'sfmeswms'
 
 
 export const PublicParam = {
-  name: 'JyPDA',
+  name: 'WMS',
   mock: true,
   loginUrl: `http://${ip}:${post}/JYTrace/API/ApiCheckLogin/`,
   GetWorkOrderUrl: `http://${ip}:${post}/JYTrace/API/APIGetWorkOrder/?LineCode=`,
@@ -37,6 +37,9 @@ export const PublicParam = {
   /**
    * wms-pda
    */
+  //登陆
+  PostLoginUrl: `http://${ip}:${post}/SFMES/api/Login/Post`,
+
   //移库
   GetALlFormTypeUrl: `http://${ip}:${post}/${api}/api/MovementRecord/GetALlFormType`,
   GetWMSFormByFormTypeIdUrl: `http://${ip}:${post}/${api}/api/MovementRecord/GetWMSFormByFormTypeId`,

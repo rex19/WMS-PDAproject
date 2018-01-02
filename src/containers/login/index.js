@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -25,7 +25,7 @@ let num = 1;
 //   ]
 // })
 
-class Login extends PureComponent {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
