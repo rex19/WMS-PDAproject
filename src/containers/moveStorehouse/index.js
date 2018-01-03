@@ -6,7 +6,7 @@ import {
   View,
   ScrollView
 } from 'react-native';
-
+import { connect } from 'react-redux'; // 引入connect函数
 import { Button, List, Picker, InputItem, WhiteSpace, Modal, WingBlank, Toast, Radio, Icon, ActivityIndicator, TextareaItem } from 'antd-mobile';
 import { PublicParam } from '../../utils/config.js'
 import mockJson from '../../mock/mock.json';
@@ -19,7 +19,7 @@ const Brief = Item.Brief;
 const RadioItem = Radio.RadioItem;
 
 
-export default class MoveStorehouse extends PureComponent {
+class MoveStorehouse extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,7 +97,7 @@ export default class MoveStorehouse extends PureComponent {
         WMSFormId: parseInt(this.state.DocsNumberValue[0]),
         ContainerNumber: this.state.uidValue,
         LocationNumber: this.state.targetValue,
-        UserId: 10
+        UserId: this.props.user.userId
       })
     }).then((response) => {
       return response.json();
@@ -117,7 +117,7 @@ export default class MoveStorehouse extends PureComponent {
   }
   //onClick={this.onClick('DocsNumberArray')}
   render() {
-    console.log('render', this.state)
+    console.log('MoveStorehouseRender', this.state, this.props)
     return (
       <View >
         <WhiteSpace size="sm" />
@@ -171,6 +171,10 @@ export default class MoveStorehouse extends PureComponent {
     );
   }
 }
+export default connect(
+  (state) => ({
+    user: state.loginIn.user,
+  }), (dispatch) => ({}))(MoveStorehouse)
 
 const styles = StyleSheet.create({
   title: {

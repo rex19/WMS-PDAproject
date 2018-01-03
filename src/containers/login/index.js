@@ -42,18 +42,22 @@ class Login extends Component {
 
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('login-shouldComponentUpdate', nextProps, nextProps.status)
-
-    // 登录完成,切成功登录
-    if (nextProps.status === '登陆成功' && nextProps.isSuccess) {
-      this.props.navigation.dispatch(NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'MiddleMenu', params: { name: '菜单', key: this.props.navigation.state.key } })
-        ]
-      }))
-      return false;
+    console.log('login-shouldComponentUpdate', nextProps, this.props)
+    if (nextProps != this.props) {
+      // 登录完成,切成功登录
+      if (nextProps.status === '登陆成功' && nextProps.isSuccess) {
+        this.props.navigation.dispatch(NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'MiddleMenu', params: { name: '菜单', key: this.props.navigation.state.key } })
+          ]
+        }))
+        return false;
+      } else if (nextProps.status === '登录出错' && nextProps.isSuccess) {
+        Toast.success('账号密码错误', 1);
+      }
     }
+    console.log('nextProps === this.props', nextProps, this.props)
     return true;
   }
 
@@ -88,8 +92,18 @@ class Login extends Component {
     this.setState({ passWord: passWord })
   }
 
+  handleLogin = () => {
+
+    if (this.state.userName.length > 0 && this.state.passWord.length > 0) {
+      console.log('this.state.userName.length>0&& this.state.passWord.length>0')
+      this.props.login(this.state.userName, this.state.passWord)
+      return
+    }
+    console.log('handleLogin 请输入用户名密码', this.state.userName, this.state.passWord)
+  }
+
   render() {
-    const { login } = this.props;
+    // const { login } = this.props;
     const { userName, passWord } = this.state;
     return (
       <View >
@@ -116,12 +130,13 @@ class Login extends Component {
         </List>
         <WhiteSpace size="lg" />
         <WingBlank size="lg">
-          <Button type='primary' onClick={() => login(userName, passWord)} >登陆</Button>
+          <Button type='primary' onClick={this.handleLogin} >登陆</Button>
         </WingBlank>
       </View>
     );
   }
 }
+//() => login(userName, passWord)
 export default connect(
   (state) => ({
     status: state.loginIn.status,

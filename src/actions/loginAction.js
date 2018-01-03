@@ -28,8 +28,20 @@ export function login(userName, passWord) {
         Pwd: passWord
       })
     }).then((res) => {
-      const user = userName
-      dispatch(loginSuccess(true, user)); // 登录请求完成
+      return res.json()
+      // dispatch(loginSuccess(true, user)); // 登录请求完成
+    }).then((resJson) => {
+      if (resJson.Data == null) {
+        console.log('resJson.Data==null', resJson);
+        dispatch(loginError(false)); // 登录请求出错
+      } else if (resJson.Data != null) {
+        const user = {
+          name: resJson.Data.Account,
+          userId: resJson.Data.Id
+        }
+        console.log('login(userName, passWord) {', user, resJson);
+        dispatch(loginSuccess(true, user)); // 登录请求完成
+      }
     }).catch((e) => {
       console.log('catch((e)', e);
       dispatch(loginError(false)); // 登录请求出错
@@ -60,6 +72,7 @@ function loginError(isSuccess) {
   console.log('error');
   return {
     type: types.LOGIN_IN_ERROR,
+    message: '账号密码错误',
   }
 }
 

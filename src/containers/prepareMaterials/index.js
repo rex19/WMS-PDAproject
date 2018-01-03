@@ -132,7 +132,7 @@ class PrepareMaterials extends PureComponent {
         MaterialPickingFormId: parseInt(this.state.PrepareMaterialsOrderValue[0]),
         MaterialPickingFormItemNumber: this.state.current,
         ContainerNumber: this.state.ScanValue,//'C000000001'
-        UserId: 10,
+        UserId: this.props.user.userId,
         AreaId: 1
       }
       console.log('提交', param)
@@ -158,7 +158,7 @@ class PrepareMaterials extends PureComponent {
     }
   }
   render() {
-    console.log('PrepareMaterialsrender', this.state)
+    console.log('PrepareMaterialsrender', this.state, this.props)
     return (
       <View >
         <List>
@@ -205,7 +205,7 @@ class PrepareMaterials extends PureComponent {
             value={this.state.ScanValue}
             // editable={true}
             onChange={this.ScanValueChange.bind(this)}
-            editable={!this.state.EnableScanContainer}
+            editable={this.state.EnableScanContainer}
           ><Text>扫描:</Text></InputItem>
         </List>
         <Button type='primary' style={styles.quitButton}

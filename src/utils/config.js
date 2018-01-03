@@ -48,7 +48,7 @@ export const PublicParam = {
   // GetAllMaterialPickingFormUrl: `http://${localIp}:${localPost}/sfwms/api/prepareMaterials/GetAllMaterialPickingForm`,
   // GetMaterialPickingFormItemOnedUrl: `http://${localIp}:${localPost}/sfwms/api/prepareMaterials/GetMaterialPickingFormItemOne/`,
   GetAllMaterialPickingFormUrl: `http://${ip}:${post}/${api}/api/MaterialPicking/GetAllMaterialPickingForm`,
-  GetMaterialPickingFormItemOnedUrl: `http://${ip}:${post}/${api}/api/MaterialPicking/GetAllMaterialPickingForm`,
+  GetMaterialPickingFormItemOnedUrl: `http://${ip}:${post}/${api}/api/MaterialPicking/GetMaterialPickingFormItemOne`,
   PostSubmitUrl: `http://${ip}:${post}/${api}/Api/MaterialPicking/Post`,
 }
 
