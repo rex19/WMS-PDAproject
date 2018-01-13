@@ -18,6 +18,29 @@ const Item = List.Item;
 const Brief = Item.Brief;
 const RadioItem = Radio.RadioItem;
 
+const TestArray = [
+  {
+    label: '1',
+    value: '1',
+  }, {
+    label: '2',
+    value: '2',
+  },
+  {
+    label: '3',
+    value: '3',
+  }, {
+    label: '4',
+    value: '4',
+  },
+  {
+    label: '5',
+    value: '5',
+  }, {
+    label: '6',
+    value: '6',
+  }
+];
 
 class MoveStorehouse extends PureComponent {
   constructor(props) {
@@ -40,7 +63,7 @@ class MoveStorehouse extends PureComponent {
   componentDidMount() {
     this.fetchRequestInitFunc()
   }
-
+  //第一个api
   fetchRequestInitFunc = () => {
     fetch(GetALlFormTypeUrl, { method: "GET" })
       .then((response) => {
@@ -53,13 +76,14 @@ class MoveStorehouse extends PureComponent {
         console.log('GetALlFormTypeUrlError::', error)
       }).done();
   }
+  //第二个api
   fetchRequestFunc = (param = 1) => {
     console.log('fetchRequestFunc', param)
     //第二个fetch，初始化一个DocsNumberArray下拉菜单的值
     fetch(`${GetWMSFormByFormTypeIdUrl}/?formTypeId=${param}`,
       { method: "GET" }
     ).then((response) => {
-      console.log('fetchRequestFunc.then', `${GetWMSFormByFormTypeIdUrl}/${param}`, response)
+      console.log('fetchRequestFunc.then', `${GetWMSFormByFormTypeIdUrl}/?formTypeId=${param}`, response)
       return response.json();
     }).then((responseJson) => {
       console.log('fetchRequestFunc', responseJson)
@@ -72,6 +96,12 @@ class MoveStorehouse extends PureComponent {
   onClick = (key) => () => {
     this.setState({ [key]: lineObj })
   }
+
+  onChangeTest = (key) => (value) => {
+    console.log('onChange', key, value)
+    this.setState({ [key]: value });
+  }
+
   onChange = (key) => (value) => {
     console.log('onChange', key, value)
     this.setState({ [key]: value });
@@ -117,7 +147,7 @@ class MoveStorehouse extends PureComponent {
   }
   //onClick={this.onClick('DocsNumberArray')}
   render() {
-    console.log('MoveStorehouseRender', this.state, this.props)
+    console.log('MoveStorehouseRender', this.state, this.state.DocsNumberArray, this.state.DocsNumberValue[0])
     return (
       <View >
         <WhiteSpace size="sm" />
@@ -125,7 +155,7 @@ class MoveStorehouse extends PureComponent {
           <Picker
             data={this.state.OperationTypeArray}
             cols={1}
-            value={this.state.OperationTypeValue[0]}
+            value={this.state.OperationTypeValue}
             onChange={this.onChange('OperationTypeValue')}
           >
             <List.Item arrow="horizontal" last ><Text style={styles.span}>操作类型:</Text></List.Item>
@@ -133,8 +163,12 @@ class MoveStorehouse extends PureComponent {
           <Picker
             data={this.state.DocsNumberArray}
             cols={1}
-            value={this.state.DocsNumberValue[0]}
+            value={this.state.DocsNumberValue}
             onChange={this.onChange('DocsNumberValue')}
+          // data={TestArray}
+          // cols={1}
+          // value={this.state.DocsNumberValue}
+          // onChange={this.onChangeTest('DocsNumberValue')}
           >
             <List.Item arrow="horizontal" last ><Text style={styles.span}>单据号:</Text></List.Item>
           </Picker>

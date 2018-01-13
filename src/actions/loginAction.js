@@ -2,19 +2,17 @@
 
 import * as types from '../constants/loginTypes';// 导入事件类型,用来做分配给各个事件
 import { PublicParam } from '../utils/config.js'
-
+import CryptoJS from 'crypto-js'
 const { PostLoginUrl } = PublicParam
-// 模拟用户信息
-// let user = {
-//   name: 'zhangsan',
-//   age: 24,
-// }
+
 
 // 访问登录接口 根据返回结果来划分action属于哪个type,然后返回对象,给reducer处理
 
 export function login(userName, passWord) {
-  console.log('登录方法', userName, passWord);
+  console.log('登录方法', userName, passWord, CryptoJS.MD5(passWord).toString());
   // if (userName.length > 0 && passWord.length > 0) {
+
+  const MD5Password = CryptoJS.MD5(passWord).toString()
   return dispatch => {
     dispatch(isLogining()); // 正在执行登录请求
     // 模拟用户登录
@@ -25,7 +23,7 @@ export function login(userName, passWord) {
       },
       body: JSON.stringify({
         Account: userName,
-        Pwd: passWord
+        Pwd: MD5Password
       })
     }).then((res) => {
       return res.json()
