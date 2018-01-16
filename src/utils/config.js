@@ -6,13 +6,13 @@
  * @param PostWorkOrderUrl   post 工单请求
  * @param PostTracebilityUrl   post 追溯请求
  */
-const ip = '192.168.1.230'
-const post = '80'
-const api = 'sfmeswms'
-
-// const ip = '192.168.1.252'
+// const ip = '192.168.1.230'
 // const post = '80'
 // const api = 'sfmeswms'
+
+const ip = '192.168.1.252'
+const post = '80'
+const api = 'sfmeswms'
 
 // const ip = '192.168.1.136'
 // const post = '3009'

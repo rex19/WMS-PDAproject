@@ -104,7 +104,8 @@ class MoveStorehouse extends PureComponent {
 
   onChange = (key) => (value) => {
     console.log('onChange', key, value)
-    this.setState({ [key]: value });
+    //改变操作类型/单据号/UID/目标库位 时 =>清除massage
+    this.setState({ [key]: value, MessageValue: '' });
     if (key === 'DocsNumberValue') {
       this.setState({ UIDFocused: true });
     } else if (key === 'OperationTypeValue') {
@@ -115,6 +116,7 @@ class MoveStorehouse extends PureComponent {
     this.setState({ UIDFocused: false, targetFocused: true });
   }
   handleActivation() {
+    console.log('handleActivation', this.state)
     this.setState({ UIDFocused: false, targetFocused: false });
     fetch(MovementRecordPostUrl, {
       // fetch('http://192.168.1.107:3009/sfwms/Api/MovementRecord/Post', {
@@ -134,12 +136,19 @@ class MoveStorehouse extends PureComponent {
     }).then((responseJson) => {
       console.log('fetch3', responseJson)
       if (responseJson.Status === 200) {
-        //GetALlFormTypeUrl拉过来的操作类型Array
-        this.setState({
-          MessageValue: responseJson.Data.Message.toString(),
-          uidValue: '',
-          targetValue: ''
-        })
+        if (responseJson.Data.ReturnCode === 1) {
+          //重新拉取单据号请求
+          this.fetchRequestFunc(this.state.OperationTypeValue.toString())
+        } else {
+          //GetALlFormTypeUrl拉过来的操作类型Array
+          this.setState({
+            MessageValue: responseJson.Data.Message.toString(),
+            uidValue: '',
+            targetValue: '',
+            UIDFocused: true, //提交完成后光标回到UID input
+          })
+        }
+
       }
     }).catch((error) => {
       console.log('MovementRecordPostUrlError::', error)
