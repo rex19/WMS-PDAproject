@@ -29,7 +29,7 @@ class PrepareMaterials extends PureComponent {
       PackQuantityDisplayValue: '',//包装数
       RecommendLocationNumberValue: '',//库位
       MessageTitle: '',
-      EnableScanContainer: true,  //扫描
+      EnableScanContainer: false,  //扫描
       EnablePrev: false, //上一种
       EnableNext: false, //下一种
       total: 2,
@@ -208,7 +208,9 @@ class PrepareMaterials extends PureComponent {
             editable={this.state.EnableScanContainer}
           ><Text>扫描:</Text></InputItem>
         </List>
-        <Button type='primary' style={styles.quitButton}
+        <Button
+          disabled={!this.state.EnableScanContainer}
+          type='primary' style={styles.quitButton}
           onClick={() => alert('提交', '确定提交么?😄', [
             { text: '取消', onPress: () => console.log('不提交') },
             { text: '确定', onPress: () => this.handleActivation() },

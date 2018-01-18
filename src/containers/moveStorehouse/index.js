@@ -87,7 +87,11 @@ class MoveStorehouse extends PureComponent {
       return response.json();
     }).then((responseJson) => {
       console.log('fetchRequestFunc', responseJson)
-      this.setState({ DocsNumberArray: responseJson.Data })
+      this.setState({
+        DocsNumberArray: responseJson.Data,
+        uidValue: '',
+        targetValue: '',
+      })
     }).catch((error) => {
       console.log('GetALlFormTypeUrlError::', error)
     }).done();
